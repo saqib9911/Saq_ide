@@ -1,0 +1,27 @@
+{
+  "name": "Pro Playground",
+  "short_name": "Playground",
+  "description": "6-language code editor with console, templates, and offline support",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#1e1e2e",
+  "theme_color": "#89b4fa",
+  "lang": "en",
+  "categories": ["developer", "productivity", "education"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iIzFlMWUyZSIgcng9IjExMiIvPjxwYXRoIGQ9Ik0yODAgOTYgTDE2MCAyODggSDI0MCBMMjE2IDQxNiBMMzY4IDIwOCBIMjgwIFoiIGZpbGw9IiM4OWI0ZmEiIHN0cm9rZT0iIzFlMWUyZSIgc3Ryb2tlLXdpZHRoPSIxMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iIzFlMWUyZSIgcng9IjExMiIvPjxwYXRoIGQ9Ik0yODAgOTYgTDE2MCAyODggSDI0MCBMMjE2IDQxNiBMMzY4IDIwOCBIMjgwIFoiIGZpbGw9IiM4OWI0ZmEiIHN0cm9rZT0iIzFlMWUyZSIgc3Ryb2tlLXdpZHRoPSIxMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
