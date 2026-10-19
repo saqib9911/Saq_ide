@@ -1,13 +1,8 @@
-/* Pro Playground — Service Worker */
 const VERSION = 'v1';
-const PRECACHE = 'pg-precache-' + VERSION;
-const RUNTIME = 'pg-runtime-' + VERSION;
+const PRECACHE = 'saq-precache-' + VERSION;
+const RUNTIME = 'saq-runtime-' + VERSION;
 
-const APP_SHELL = [
-  './',
-  './index.html',
-  './manifest.json'
-];
+const APP_SHELL = ['./', './index.html', './manifest.json'];
 
 const CDN_PRECACHE = [
   'https://cdn.jsdelivr.net/npm/ace-builds@1.32.6/src-min-noconflict/ace.js',
@@ -20,9 +15,12 @@ const CDN_PRECACHE = [
   'https://cdn.jsdelivr.net/npm/ace-builds@1.32.6/src-min-noconflict/theme-tomorrow_night.js',
   'https://cdn.jsdelivr.net/npm/ace-builds@1.32.6/src-min-noconflict/theme-github.js',
   'https://cdn.jsdelivr.net/npm/ace-builds@1.32.6/src-min-noconflict/ext-language_tools.js',
+  'https://cdn.jsdelivr.net/npm/ace-builds@1.32.6/src-min-noconflict/ext-searchbox.js',
   'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js',
   'https://cdn.jsdelivr.net/npm/marked@4/marked.min.js',
-  'https://cdn.jsdelivr.net/npm/sass.js/dist/sass.sync.js'
+  'https://cdn.jsdelivr.net/npm/sass.js/dist/sass.sync.js',
+  'https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js',
+  'https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js'
 ];
 
 self.addEventListener('install', event => {
@@ -44,8 +42,7 @@ self.addEventListener('activate', event => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
     await Promise.all(
-      keys.filter(k => k !== PRECACHE && k !== RUNTIME)
-          .map(k => caches.delete(k))
+      keys.filter(k => k !== PRECACHE && k !== RUNTIME).map(k => caches.delete(k))
     );
     await self.clients.claim();
   })());
@@ -55,8 +52,6 @@ self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
-
-  // App shell — cache first
   if (url.origin === self.location.origin) {
     event.respondWith((async () => {
       const cached = await caches.match(req);
@@ -68,22 +63,15 @@ self.addEventListener('fetch', event => {
     })());
     return;
   }
-
-  // CDN — cache first, then network
   event.respondWith((async () => {
     const cached = await caches.match(req);
     if (cached) return cached;
     try {
       const res = await fetch(req);
-      if (res.ok && (res.type === 'basic' || res.type === 'cors' || res.type === 'opaque')) {
-        const cache = await caches.open(RUNTIME);
-        cache.put(req, res.clone());
-      }
+      if (res.ok) caches.open(RUNTIME).then(c => c.put(req, res.clone()));
       return res;
     } catch {
-      return new Response('Offline — resource not cached', {
-        status: 503, headers: { 'Content-Type': 'text/plain' }
-      });
+      return new Response('Offline', { status: 503 });
     }
   })());
 });
