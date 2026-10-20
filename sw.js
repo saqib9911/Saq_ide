@@ -1,4 +1,4 @@
-const VERSION = 'v1';
+const VERSION = 'v2';
 const PRECACHE = 'saq-precache-' + VERSION;
 const RUNTIME = 'saq-runtime-' + VERSION;
 
@@ -16,11 +16,15 @@ const CDN_PRECACHE = [
   'https://cdn.jsdelivr.net/npm/ace-builds@1.32.6/src-min-noconflict/theme-github.js',
   'https://cdn.jsdelivr.net/npm/ace-builds@1.32.6/src-min-noconflict/ext-language_tools.js',
   'https://cdn.jsdelivr.net/npm/ace-builds@1.32.6/src-min-noconflict/ext-searchbox.js',
+  'https://cdn.jsdelivr.net/npm/ace-builds@1.32.6/src-min-noconflict/keybinding-vim.js',
+  'https://cdn.jsdelivr.net/npm/ace-builds@1.32.6/src-min-noconflict/keybinding-emacs.js',
   'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js',
   'https://cdn.jsdelivr.net/npm/marked@4/marked.min.js',
   'https://cdn.jsdelivr.net/npm/sass.js/dist/sass.sync.js',
   'https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js',
-  'https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js'
+  'https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js',
+  'https://cdn.jsdelivr.net/npm/typescript@5/lib/typescript.js',
+  'https://esm.sh/prettier@3.2.5/standalone'
 ];
 
 self.addEventListener('install', event => {
@@ -52,6 +56,7 @@ self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
+
   if (url.origin === self.location.origin) {
     event.respondWith((async () => {
       const cached = await caches.match(req);
@@ -63,6 +68,7 @@ self.addEventListener('fetch', event => {
     })());
     return;
   }
+
   event.respondWith((async () => {
     const cached = await caches.match(req);
     if (cached) return cached;

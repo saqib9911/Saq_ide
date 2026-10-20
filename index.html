@@ -10,7 +10,20 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="SaqPlayground">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iIzFlMWUyZSIgcng9IjExMiIvPjxwYXRoIGQ9Ik0yODAgOTYgTDE2MCAyODggSDI0MCBMMjE2IDQxNiBMMzY4IDIwOCBIMjgwIFoiIGZpbGw9IiM4OWI0ZmEiIHN0cm9rZT0iIzFlMWUyZSIgc3Ryb2tlLXdpZHRoPSIxMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==">
+
 <style>
+/* SPLASH SCREEN */
+#splash {position:fixed;inset:0;z-index:9999;background:#1e1e2e;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s}
+#splash.hide {opacity:0;visibility:hidden}
+.splash-logo {font-size:60px;margin-bottom:20px;animation:bounce 2s infinite ease-in-out}
+.splash-title {font-size:28px;font-weight:800;color:#89b4fa;letter-spacing:1px;margin-bottom:8px;animation:glow 2s infinite alternate}
+.splash-subtitle {font-size:14px;color:#6c7086;margin-bottom:40px}
+.splash-loader {width:50px;height:50px;border:4px solid rgba(137,180,250,.2);border-top-color:#89b4fa;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes glow{from{text-shadow:0 0 10px rgba(137,180,250,.2)}to{text-shadow:0 0 30px rgba(137,180,250,.8)}}
+
+/* MAIN UI */
 :root{--bg:#1e1e2e;--bg-alt:#181825;--bg-dark:#11111b;--fg:#cdd6f4;--fg-dim:#6c7086;--border:#313244;--accent:#89b4fa;--accent-2:#cba6f7;--success:#a6e3a1;--error:#f38ba8;--warn:#f9e2af;--info:#89dceb;--modal-bg:rgba(0,0,0,.7)}
 [data-theme="light"]{--bg:#fff;--bg-alt:#f5f5f5;--bg-dark:#fafafa;--fg:#1e1e2e;--fg-dim:#6c7086;--border:#e0e0e0;--accent:#4a90e2;--accent-2:#7c3aed;--success:#16a34a;--error:#dc2626;--warn:#ca8a04;--info:#0284c7;--modal-bg:rgba(0,0,0,.4)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -22,7 +35,7 @@ header h1{font-size:14px;color:var(--accent-2);white-space:nowrap;font-weight:80
 #projectName:focus{border-color:var(--accent)}
 header button,header select{background:var(--border);color:var(--fg);border:none;padding:6px 8px;border-radius:5px;font-size:12px;cursor:pointer;white-space:nowrap}
 header button:hover,header select:hover{background:var(--fg-dim)}
-header select{max-width:130px}
+header select{max-width:120px}
 .tabs{display:flex;gap:3px;padding:5px;background:var(--bg-alt);border-bottom:1px solid var(--border);align-items:center;flex-wrap:wrap;flex-shrink:0}
 .tabs button{background:var(--border);color:var(--fg);border:none;padding:6px 10px;border-radius:5px;font-size:12px;cursor:pointer;font-weight:500;opacity:.7}
 .tabs button.active{background:var(--accent);color:#11111b;font-weight:700;opacity:1}
@@ -46,7 +59,6 @@ main.split #previewArea{display:flex !important;position:absolute;top:50%;left:0
 #previewArea.fullscreen{position:fixed;inset:0;z-index:500;background:var(--bg)}
 #previewBar{display:flex;gap:4px;padding:4px 6px;background:var(--bg-alt);align-items:center;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;white-space:nowrap}
 #previewBar::-webkit-scrollbar{height:3px}
-#previewBar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 #previewBar button{background:var(--error);color:#fff;border:none;padding:5px 9px;border-radius:4px;font-weight:700;cursor:pointer;font-size:11px;flex-shrink:0}
 #previewBar .dev-btn{background:var(--border);color:var(--fg)}
 #previewBar .dev-btn.active{background:var(--accent);color:#11111b}
@@ -62,7 +74,6 @@ main.split #previewArea{display:flex !important;position:absolute;top:50%;left:0
 #consolePanel{flex:0 0 auto;height:130px;display:none;flex-direction:column;background:var(--bg-dark);border-top:2px solid var(--accent);position:relative;flex-shrink:0}
 #consolePanel.open{display:flex}
 #consoleResize{position:absolute;top:-4px;left:0;right:0;height:8px;cursor:row-resize;z-index:10}
-#consoleResize:hover{background:rgba(137,180,250,.3)}
 .consoleHeader{display:flex;align-items:center;gap:6px;padding:4px 8px;background:var(--bg-alt);border-bottom:1px solid var(--border);font-size:11px;flex-shrink:0}
 .consoleHeader span{color:var(--accent-2);font-weight:600}
 .consoleHeader button{background:var(--border);color:var(--fg);border:none;padding:3px 7px;border-radius:3px;font-size:11px;cursor:pointer}
@@ -77,7 +88,6 @@ main.split #previewArea{display:flex !important;position:absolute;top:50%;left:0
 .cl-info{color:var(--info)}
 .cl-warn{color:var(--warn)}
 .cl-error{color:var(--error);background:rgba(243,139,168,.08);cursor:pointer}
-.cl-error:hover{background:rgba(243,139,168,.18)}
 .cl-compile{border-left:3px solid var(--error);padding-left:6px;background:rgba(243,139,168,.12)}
 .cl-hidden{display:none}
 #status{flex:0 0 auto;padding:4px 8px;font-size:11px;color:var(--fg-dim);background:var(--bg-alt);border-top:1px solid var(--border);display:flex;gap:4px;align-items:center;padding-bottom:calc(4px + env(safe-area-inset-bottom));overflow-x:auto;flex-shrink:0}
@@ -97,6 +107,8 @@ main.split #previewArea{display:flex !important;position:absolute;top:50%;left:0
 .loading-bar{height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);animation:pulse 1.5s ease infinite;position:absolute;top:0;left:0;right:0;z-index:100;display:none}
 .loading-bar.show{display:block}
 @keyframes pulse{0%{opacity:.3}50%{opacity:1}100%{opacity:.3}}
+
+/* MODALS & TOOLS */
 .modal{position:fixed;inset:0;background:var(--modal-bg);display:none;align-items:center;justify-content:center;z-index:1000;padding:16px}
 .modal.open{display:flex}
 .modal-content{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:20px;max-width:500px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}
@@ -104,11 +116,11 @@ main.split #previewArea{display:flex !important;position:absolute;top:50%;left:0
 .modal-content .modal-close{margin-top:14px;background:var(--border);color:var(--fg);border:none;padding:9px 18px;border-radius:6px;cursor:pointer;font-size:13px}
 .modal-content .primary{background:var(--accent);color:#11111b;font-weight:700}
 .modal-content label{display:block;margin:10px 0 4px;font-size:12px;color:var(--fg-dim)}
-.modal-content input,.modal-content select,.modal-content textarea{width:100%;background:var(--bg-alt);border:1px solid var(--border);color:var(--fg);padding:9px 12px;border-radius:6px;font-size:13px;font-family:inherit;outline:none}
+.modal-content input,.modal-content select,.modal-content textarea{width:100%;background:var(--bg-alt);border:1px solid var(--border);color:var(--fg);padding:9px 12px;border-radius:6px;font-size:13px;font-family:inherit;outline:none;margin-bottom:10px}
 .modal-content input:focus{border-color:var(--accent)}
 .lib-item{display:flex;align-items:center;gap:10px;padding:8px;border-radius:6px;cursor:pointer}
 .lib-item:hover{background:var(--bg-alt)}
-.lib-item input{width:16px;height:16px;cursor:pointer;accent-color:var(--accent)}
+.lib-item input{width:16px;height:16px;cursor:pointer;accent-color:var(--accent);margin:0}
 .lib-item .lib-name{flex:1;font-size:13px}
 .lib-item .lib-cat{font-size:10px;color:var(--fg-dim);background:var(--bg-alt);padding:2px 6px;border-radius:8px}
 .palette-content{max-width:480px;padding:12px}
@@ -121,7 +133,7 @@ main.split #previewArea{display:flex !important;position:absolute;top:50%;left:0
 .palette-item .palette-key{font-size:10px;color:var(--fg-dim);font-family:monospace}
 #projectsModal .modal-content{max-width:560px}
 .proj-search{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-.proj-search input{flex:1;min-width:120px;background:var(--bg-alt);border:1px solid var(--border);color:var(--fg);padding:10px 14px;border-radius:6px;font-size:13px;outline:none}
+.proj-search input{flex:1;min-width:120px;background:var(--bg-alt);border:1px solid var(--border);color:var(--fg);padding:10px 14px;border-radius:6px;font-size:13px;outline:none;margin:0}
 .proj-search button{background:var(--border);color:var(--fg);border:none;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:12px}
 .proj-list{max-height:400px;overflow-y:auto;margin-bottom:10px}
 .proj-item{display:flex;align-items:center;gap:6px;padding:10px 12px;background:var(--bg-alt);border-radius:8px;margin-bottom:6px;border:1px solid transparent;flex-wrap:wrap}
@@ -169,9 +181,23 @@ main.split #previewArea{display:flex !important;position:absolute;top:50%;left:0
 .install-banner #installLater{background:transparent;color:#11111b;font-size:16px;padding:4px 6px;opacity:.6}
 @keyframes installSlideUp{from{transform:translateY(120%);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes installSlideDown{from{transform:translateY(0);opacity:1}to{transform:translateY(120%);opacity:0}}
+
+/* FLOATING TEXT MENU */
+.floating-text-menu {position:absolute;background:var(--bg-alt);border:1px solid var(--border);border-radius:8px;display:none;gap:2px;padding:4px;box-shadow:0 4px 12px rgba(0,0,0,.5);z-index:1000}
+.floating-text-menu.show {display:flex}
+.floating-text-menu button {background:var(--bg);color:var(--fg);border:none;padding:6px 10px;border-radius:4px;font-size:12px;cursor:pointer;font-weight:600}
+.floating-text-menu button:hover {background:var(--border)}
 </style>
 </head>
 <body>
+
+<!-- SPLASH SCREEN -->
+<div id="splash">
+  <div class="splash-logo">⚡</div>
+  <div class="splash-title">SaqPlayground</div>
+  <div class="splash-subtitle">Loading your creative space...</div>
+  <div class="splash-loader"></div>
+</div>
 
 <div class="loading-bar" id="loadingBar"></div>
 
@@ -192,6 +218,7 @@ main.split #previewArea{display:flex !important;position:absolute;top:50%;left:0
   </select>
   <button id="projectsBtn" title="All Projects">📂</button>
   <button id="newProjectBtn" title="New">➕</button>
+  <button id="openFolderBtn" title="Open Local Folder">📁</button>
   <button id="shareBtn" title="Share">🔗</button>
   <button id="saveAsBtn" title="Save to Folder">💾</button>
   <button id="zipBtn" title="ZIP">📦</button>
@@ -206,6 +233,7 @@ main.split #previewArea{display:flex !important;position:absolute;top:50%;left:0
   <button data-tab="scss">SCSS</button>
   <button data-tab="ts">TS</button>
   <div class="spacer"></div>
+  <button id="findReplaceBtn" class="tool-btn" title="Find & Replace">🔍</button>
   <button id="emmetBtn" class="tool-btn" title="Emmet">⚡</button>
   <button id="formatBtn" class="format" title="Format">✨</button>
   <button id="runBtn" class="run">▶ Run</button>
@@ -214,12 +242,21 @@ main.split #previewArea{display:flex !important;position:absolute;top:50%;left:0
 </div>
 
 <main id="mainArea">
-  <div class="editor-wrap active" data-lang="html"><div class="ace-editor" id="ace-html"></div></div>
+  <div class="editor-wrap active" data-lang="html">
+    <div class="ace-editor" id="ace-html"></div>
+    <div class="floating-text-menu" id="textMenu">
+      <button data-act="cut">✂️ Cut</button>
+      <button data-act="copy">📋 Copy</button>
+      <button data-act="paste">📥 Paste</button>
+      <button data-act="selectAll">All</button>
+    </div>
+  </div>
   <div class="editor-wrap" data-lang="css"><div class="ace-editor" id="ace-css"></div></div>
   <div class="editor-wrap" data-lang="js"><div class="ace-editor" id="ace-js"></div></div>
   <div class="editor-wrap" data-lang="md"><div class="ace-editor" id="ace-md"></div></div>
   <div class="editor-wrap" data-lang="scss"><div class="ace-editor" id="ace-scss"></div></div>
   <div class="editor-wrap" data-lang="ts"><div class="ace-editor" id="ace-ts"></div></div>
+  
   <div id="previewArea">
     <div id="previewBar">
       <button id="closePreviewBtn">✕</button>
@@ -272,6 +309,21 @@ main.split #previewArea{display:flex !important;position:absolute;top:50%;left:0
   <span id="saveMsg"></span>
 </div>
 
+<!-- MODALS -->
+<div class="modal" id="findReplaceModal">
+  <div class="modal-content">
+    <h2>🔍 Find & Replace</h2>
+    <label>Find</label>
+    <input type="text" id="findInput" placeholder="Text to find...">
+    <label>Replace with</label>
+    <input type="text" id="replaceInput" placeholder="Replace with...">
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="modal-close primary" id="replaceBtn" style="margin-top:0">Replace</button>
+      <button class="modal-close primary" id="replaceAllBtn" style="margin-top:0;background:var(--accent-2)">Replace All</button>
+    </div>
+    <button class="modal-close">Close</button>
+  </div>
+</div>
 <div class="modal" id="libraryModal"><div class="modal-content"><h2>📚 Libraries</h2><div id="libraryList"></div><button class="modal-close primary" id="libDone">✓ Done</button></div></div>
 <div class="modal" id="paletteModal"><div class="modal-content palette-content"><input type="text" id="paletteInput" placeholder="Command..."><div id="paletteList"></div></div></div>
 <div class="modal" id="projectsModal">
@@ -281,7 +333,7 @@ main.split #previewArea{display:flex !important;position:absolute;top:50%;left:0
     <div class="tag-filter" id="tagFilter"></div>
     <div class="proj-list" id="projectsList"></div>
     <div class="proj-actions-bar">
-      <button id="saveToFolderBtn" class="primary">💾 Save Folder</button>
+      <button id="saveToFolderBtn" class="primary">💾 Save as Folder</button>
       <button id="projExportZipBtn">📦 ZIP</button>
       <button id="projCloseBtn">✕</button>
     </div>
@@ -329,6 +381,7 @@ main.split #previewArea{display:flex !important;position:absolute;top:50%;left:0
   <button id="installLater" title="Later">✕</button>
 </div>
 
+<!-- LIBS -->
 <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.32.6/src-min-noconflict/ace.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.32.6/src-min-noconflict/mode-html.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.32.6/src-min-noconflict/mode-css.js"></script>
@@ -357,7 +410,11 @@ import * as pMd from "https://esm.sh/prettier@3.2.5/plugins/markdown";
 
 (function(){
 'use strict';
-const SK='saq_projects_v2',CK='saq_current_v2',TK='saq_theme',AK='saq_autorun',FK='saq_font',WK='saq_wrap',KBK='saq_kb',PSK='saq_prettier',MAXC=300;
+
+// SPLASH SCREEN TIMEOUT
+setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 3500);
+
+const SK='saq_projects_final_v2',CK='saq_current_final_v2',TK='saq_theme',AK='saq_autorun',FK='saq_font',WK='saq_wrap',KBK='saq_kb',PSK='saq_prettier',MAXC=300;
 const $=id=>document.getElementById(id);
 const LANGS=['html','css','js','md','scss','ts'];
 const EXT={html:'html',css:'css',js:'js',md:'md',scss:'scss',ts:'ts'};
@@ -369,7 +426,7 @@ const projectNameEl=$('projectName'),statusMsg=$('statusMsg'),saveMsg=$('saveMsg
 const runBtn=$('runBtn'),cursorPos=$('cursorPos'),loadingBar=$('loadingBar');
 const autoRunToggle=$('autoRunToggle'),themeToggle=$('themeToggle'),fontBtn=$('fontBtn');
 const quickChars=$('quickChars'),recentBar=$('recentBar'),colorPickerFloat=$('colorPickerFloat');
-const autoFolderBtn=$('autoFolderBtn');
+const autoFolderBtn=$('autoFolderBtn'), textMenu=$('textMenu');
 
 const DEFAULT={html:'<h1>Hello, World! 👋</h1>\n<p>Console dekho neeche 📟</p>\n<button onclick="alert(\'Hi!\')">Click me</button>',css:'body{font-family:system-ui,sans-serif;text-align:center;padding:40px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;min-height:100vh;margin:0}\nbutton{padding:12px 24px;font-size:16px;border:none;border-radius:8px;cursor:pointer;background:white;color:#764ba2;font-weight:600}',js:'console.log("Salaam! SaqPlayground ✅");',md:'',scss:'',ts:''};
 
@@ -386,7 +443,7 @@ let prettierSettings=JSON.parse(localStorage.getItem(PSK)||'{"tabWidth":2,"semi"
 let autoFolderHandle=null,autoFolderEnabled=false;
 
 // IndexedDB for folder handle
-function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open('saq_db',1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains('h'))r.result.createObjectStore('h');};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});}
+function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open('saq_db_v2',1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains('h'))r.result.createObjectStore('h');};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});}
 async function saveHandle(h){const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction('h','readwrite');tx.objectStore('h').put(h,'auto');tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);});}
 async function getHandle(){try{const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction('h','readonly');const r=tx.objectStore('h').get('auto');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});}catch{return null;}}
 async function verifyPerm(h,readWrite=true){const opt={mode:readWrite?'readwrite':'read'};try{if((await h.queryPermission(opt))==='granted')return true;if((await h.requestPermission(opt))==='granted')return true;return false;}catch{return false;}}
@@ -416,7 +473,7 @@ ts:[{n:'interface',c:'interface User {\n  id:number;\n  name:string;\n}'},{n:'ty
 md:[{n:'heading',c:'# Heading\n\n## Subheading\n\nParagraph.'},{n:'link',c:'[Link text](https://example.com)'},{n:'image',c:'![Alt](url.png)'},{n:'code-block',c:'```js\nconsole.log("hi");\n```'},{n:'table',c:'| Col 1 | Col 2 |\n|-------|-------|\n| Cell  | Cell  |'}]
 };
 
-const SHORTCUTS=[['Ctrl+S','Save'],['Ctrl+Enter','Run'],['Ctrl+O','Projects'],['Ctrl+Shift+N','New'],['Ctrl+Shift+F','Format'],['Ctrl+Shift+P','Palette'],['Ctrl+Shift+S','Share'],['Ctrl+Shift+H','History'],['Ctrl+Shift+A','Auto-folder'],['Ctrl+D','Dup Line'],['Ctrl+/','Comment'],['Ctrl+H','Find'],['Ctrl+`','Console'],['Tab','Emmet'],['F1','Shortcuts']];
+const SHORTCUTS=[['Ctrl+S','Save'],['Ctrl+Enter','Run'],['Ctrl+O','Projects'],['Ctrl+Shift+N','New'],['Ctrl+Shift+F','Format'],['Ctrl+Shift+P','Palette'],['Ctrl+Shift+S','Share'],['Ctrl+Shift+H','History'],['Ctrl+Shift+A','Auto-folder'],['Ctrl+D','Dup Line'],['Ctrl+/','Comment'],['Ctrl+H','Find & Replace'],['Ctrl+`','Console'],['Tab','Emmet'],['F1','Shortcuts']];
 
 function applyTheme(){document.documentElement.dataset.theme=theme;themeToggle.textContent=theme==='dark'?'🌙':'☀️';const t=theme==='dark'?'ace/theme/tomorrow_night':'ace/theme/github';Object.values(editors).forEach(ed=>ed.setTheme(t));localStorage.setItem(TK,theme);}
 themeToggle.addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';applyTheme();});
@@ -460,6 +517,30 @@ setStatus('💾 Auto-saved');
 function scheduleFolderSave(){if(!autoFolderEnabled)return;clearTimeout(folderSaveTimer);folderSaveTimer=setTimeout(autoSaveFolder,5000);}
 autoFolderBtn.addEventListener('click',toggleAutoFolder);
 
+// OPEN LOCAL FOLDER
+async function openLocalFolder() {
+  if (!window.showDirectoryPicker) { alert('Browser folder opening support nahi karta.'); return; }
+  try {
+    const dirHandle = await window.showDirectoryPicker({ mode: 'read' });
+    let htmlContent = '', cssContent = '', jsContent = '';
+    let projectName = dirHandle.name;
+    for await (const entry of dirHandle.values()) {
+      if (entry.kind === 'file') {
+        const file = await entry.getFile();
+        const text = await file.text();
+        const name = entry.name.toLowerCase();
+        if (name === 'index.html' || name === 'index.htm') htmlContent = text;
+        else if (name.endsWith('.css')) cssContent += text + '\n';
+        else if (name.endsWith('.js')) jsContent += text + '\n';
+      }
+    }
+    if (!htmlContent && !cssContent && !jsContent) { alert('Is folder mein code file nahi mili.'); return; }
+    const newProj = createProject(projectName, { html: htmlContent || DEFAULT.html, css: cssContent || DEFAULT.css, js: jsContent || DEFAULT.js, md:'', scss:'', ts:'' });
+    currentId = newProj.id; loadToEditors(); persist(); flash('✓ Folder imported!', 'ok');
+  } catch(e) { if (e.name === 'AbortError') return; alert('Error: ' + e.message); }
+}
+$('openFolderBtn').addEventListener('click', openLocalFolder);
+
 function initEditors(){
 LANGS.forEach(lang=>{
 const el=$('ace-'+lang);
@@ -468,15 +549,30 @@ ed.session.setUseWrapMode(wordWrap);
 editors[lang]=ed;
 ed.session.on('change',()=>{scheduleSave();setStatus('✎');scheduleAutoRun();scheduleFolderSave();});
 ed.selection.on('changeCursor',()=>{if(!el.parentElement.classList.contains('active'))return;const p=ed.getCursorPosition();cursorPos.textContent=`Ln ${p.row+1}, C${p.column+1}`;});
-// Duplicate line
+
+// FLOATING MENU FOR MOBILE TEXT SELECTION
+let menuTimeout;
+ed.selection.on('changeSelection', () => {
+  if (el.parentElement.classList.contains('active')) {
+    const range = ed.getSelectionRange();
+    if (range.start.row !== range.end.row || range.start.column !== range.end.column) {
+      clearTimeout(menuTimeout);
+      menuTimeout = setTimeout(() => {
+        textMenu.classList.add('show');
+        textMenu.style.top = '10px';
+        textMenu.style.left = '10px';
+      }, 500);
+    } else {
+      textMenu.classList.remove('show');
+    }
+  }
+});
+
 ed.commands.addCommand({name:'duplicateLine',bindKey:{win:'Ctrl-D',mac:'Cmd-D'},exec:(e)=>{const r=e.getSelectionRange();const line=e.session.getLine(r.start.row);e.session.insert({row:r.end.row+1,column:0},line+'\n');}});
-// Toggle comment
 ed.commands.addCommand({name:'toggleComment',bindKey:{win:'Ctrl-/',mac:'Cmd-/'},exec:(e)=>{e.toggleComment();}});
-// Image paste
 el.addEventListener('paste',async(ev)=>{const items=ev.clipboardData?.items;if(!items)return;for(const item of items){if(item.type.startsWith('image/')){ev.preventDefault();const blob=item.getAsFile();const reader=new FileReader();reader.onload=()=>{ed.insert(reader.result);flash('✓ Image','ok');};reader.readAsDataURL(blob);return;}}});
 ed.on('focus',()=>{quickChars.classList.add('show');const tab=document.querySelector('.tabs button[data-tab].active').dataset.tab;colorPickerFloat.classList.toggle('show',tab==='css'||tab==='scss');});
 });
-// Snippets completer
 try{
 const langTools=ace.require('ace/ext/language_tools');
 const completer={getCompletions(editor,session,pos,prefix,callback){
@@ -495,7 +591,51 @@ langTools.addCompleter(completer);
 }catch(e){console.warn('Snippets:',e);}
 }
 
-// Emmet
+// Floating menu actions
+textMenu.querySelectorAll('button').forEach(b => {
+  b.addEventListener('click', (e) => {
+    e.preventDefault();
+    const ed = editors[document.querySelector('.tabs button[data-tab].active').dataset.tab];
+    const act = b.dataset.act;
+    if (act === 'copy') {
+      document.execCommand('copy');
+    } else if (act === 'cut') {
+      document.execCommand('cut');
+    } else if (act === 'paste') {
+      navigator.clipboard.readText().then(text => ed.insert(text)).catch(()=>alert('Paste not allowed. Use keyboard.'));
+    } else if (act === 'selectAll') {
+      ed.selectAll();
+    }
+    textMenu.classList.remove('show');
+    ed.focus();
+  });
+});
+document.addEventListener('click', (e) => {
+  if (!textMenu.contains(e.target) && !e.target.classList.contains('ace_content')) {
+    textMenu.classList.remove('show');
+  }
+});
+
+// Find & Replace
+$('findReplaceBtn').addEventListener('click', () => openModal('findReplaceModal'));
+$('replaceBtn').addEventListener('click', () => {
+  const find = $('findInput').value;
+  const rep = $('replaceInput').value;
+  if (!find) return;
+  const ed = editors[document.querySelector('.tabs button[data-tab].active').dataset.tab];
+  ed.replace(rep, {needle: find});
+  closeModal('findReplaceModal');
+});
+$('replaceAllBtn').addEventListener('click', () => {
+  const find = $('findInput').value;
+  const rep = $('replaceInput').value;
+  if (!find) return;
+  const ed = editors[document.querySelector('.tabs button[data-tab].active').dataset.tab];
+  ed.replaceAll(rep, {needle: find});
+  closeModal('findReplaceModal');
+});
+
+// Emmet logic...
 const EC={m:'margin',mt:'margin-top',mb:'margin-bottom',ml:'margin-left',mr:'margin-right',mx:'margin-left, margin-right',my:'margin-top, margin-bottom',p:'padding',pt:'padding-top',pb:'padding-bottom',pl:'padding-left',pr:'padding-right',w:'width',h:'height',mw:'max-width',c:'color',bg:'background',fs:'font-size',fw:'font-weight',ta:'text-align',d:'display',br:'border-radius',op:'opacity',z:'z-index'};
 function spl(s,x){const p=[];let d=0,c='';for(const ch of s){if(ch==='('||ch==='[')d++;else if(ch===')'||ch===']')d--;else if(ch===x&&d===0){p.push(c);c='';continue;}c+=ch;}if(c)p.push(c);return p;}
 function findTop(s,x){let d=0;for(let i=0;i<s.length;i++){const ch=s[i];if(ch==='('||ch==='[')d++;else if(ch===')'||ch===']')d--;else if(ch===x&&d===0)return i;}return-1;}
@@ -521,9 +661,7 @@ function updateSaveIndicator(){if(!lastSavedAt){saveMsg.textContent='';saveMsg.c
 indicatorTimer=setInterval(updateSaveIndicator,3000);
 
 function updateRecentBar(){if(projects.length<2){recentBar.classList.remove('show');return;}recentBar.classList.add('show');const recent=[...projects].sort((a,b)=>(b.updated||0)-(a.updated||0)).slice(0,5);recentBar.innerHTML='';recent.forEach(p=>{const b=document.createElement('button');b.textContent=p.name;if(p.id===currentId)b.classList.add('active');b.onclick=()=>{if(p.id!==currentId){currentId=p.id;persistCurrent();loadToEditors();}};recentBar.appendChild(b);});}
-
 function updateTemplatesDropdown(){const group=$('recentProjectsGroup');if(!group)return;group.innerHTML='';const recent=[...projects].sort((a,b)=>(b.updated||0)-(a.updated||0)).slice(0,10);if(!recent.length){const o=document.createElement('option');o.textContent='(none)';o.disabled=true;group.appendChild(o);return;}recent.forEach(p=>{const o=document.createElement('option');o.value='project:'+p.id;o.textContent='📄 '+p.name;group.appendChild(o);});}
-
 $('templatesBtn').addEventListener('change',e=>{const val=e.target.value;if(!val)return;if(val.startsWith('project:')){const id=val.slice(8);const p=projects.find(x=>x.id===id);if(p){saveCurrent();currentId=p.id;persistCurrent();loadToEditors();flash('✓ '+p.name,'ok');}e.target.value='';}else{loadTemplate(val);}});
 
 // Console
@@ -536,7 +674,7 @@ function toggleConsole(){consolePanel.classList.contains('open')?closeConsole():
 $('exportConsole').addEventListener('click',()=>{const lines=Array.from(consoleBody.children).map(c=>c.textContent);if(!lines.length){flash('Empty','err');return;}downloadBlob(lines.join('\n'),'console-'+Date.now()+'.txt');flash('✓','ok');});
 window.addEventListener('message',(e)=>{if(!e.data||e.data.__pg!==1)return;if(e.source!==previewFrame.contentWindow)return;if(e.data.type==='clear'){clearConsole();return;}const valid=['log','info','warn','error','debug'];addConsoleLine(valid.includes(e.data.type)?e.data.type:'log',e.data.args||[],false);});
 
-// Lib loaders
+// Lib Loaders
 function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('Failed: '+src));document.head.appendChild(s);});}
 async function ensureMarked(){if(libState.marked)return;loadingBar.classList.add('show');await loadScript('https://cdn.jsdelivr.net/npm/marked@4/marked.min.js');libState.marked=true;loadingBar.classList.remove('show');}
 async function ensureSass(){if(libState.sass)return;loadingBar.classList.add('show');await loadScript('https://cdn.jsdelivr.net/npm/sass.js/dist/sass.sync.js');libState.sass=true;loadingBar.classList.remove('show');}
@@ -560,8 +698,20 @@ if(editors.scss.getValue().trim()){await ensureSass();fC=await compileSCSS(edito
 if(editors.ts.getValue().trim()){await ensureTS();fJ=compileTS(editors.ts.getValue());}
 const safeJ=fJ.replace(/<\/script>/gi,'<\\/script>');
 const libs=libsHTML();
-if(isFullDoc(rawH)){let d=rawH;if(libs)d=injHead(d,libs);if(fC.trim())d=injHead(d,'<style>\n'+fC+'\n</style>');d=injHook(d);if(safeJ.trim())d=injBody(d,'<script>\n'+safeJ+'\n<\/script>');return d;}
-return '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width,initial-scale=1.0">\n'+libs+'\n<style>\n'+fC+'\n</style>\n</head>\n<body>\n'+rawH+'\n'+CONSOLE_HOOK+'\n<script>\n'+safeJ+'\n<\/script>\n</body>\n</html>';
+
+// INJECT VIEWPORT META TAG to fix mobile scaling issues
+const viewportMeta = '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">';
+
+if(isFullDoc(rawH)){
+let d=rawH;
+if(!/<meta\s+name="viewport"/i.test(d)) d = d.replace(/<head(\s[^>]*)?>/i, m => m + '\n' + viewportMeta);
+if(libs)d=injHead(d,libs);
+if(fC.trim())d=injHead(d,'<style>\n'+fC+'\n</style>');
+d=injHook(d);
+if(safeJ.trim())d=injBody(d,'<script>\n'+safeJ+'\n<\/script>');
+return d;
+}
+return '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="UTF-8">\n'+viewportMeta+'\n'+libs+'\n<style>\n'+fC+'\n</style>\n</head>\n<body>\n'+rawH+'\n'+CONSOLE_HOOK+'\n<script>\n'+safeJ+'\n<\/script>\n</body>\n</html>';
 }
 
 async function run(){saveCurrent();clearConsole();runBtn.disabled=true;runBtn.textContent='⏳';LANGS.forEach(l=>editors[l].session.clearAnnotations());
@@ -696,14 +846,16 @@ const COMMANDS=[
 {icon:'▶',label:'Run',key:'Ctrl+Enter',fn:()=>run()},
 {icon:'✨',label:'Format',key:'Ctrl+Shift+F',fn:formatCurrent},
 {icon:'💾',label:'Save',key:'Ctrl+S',fn:()=>{saveCurrent();flash('✓','ok');}},
+{icon:'🔍',label:'Find & Replace',key:'Ctrl+H',fn:()=>openModal('findReplaceModal')},
 {icon:'📂',label:'Projects',key:'Ctrl+O',fn:openProjectsModal},
+{icon:'📁',label:'Open Local Folder',fn:openLocalFolder},
 {icon:'🔗',label:'Share URL',key:'Ctrl+Shift+S',fn:openShareModal},
 {icon:'📚',label:'History',key:'Ctrl+Shift+H',fn:openHistoryModal},
 {icon:'📤',label:'GitHub Gist',fn:()=>openModal('gistModal')},
 {icon:'📄',label:'Export HTML',fn:exportSingleHTML},
 {icon:'💾',label:'Save as Folder',fn:saveAsFolder},
 {icon:'💾A',label:'Toggle Auto-folder',key:'Ctrl+Shift+A',fn:toggleAutoFolder},
-{icon:'📥',label:'Import',fn:importProject},
+{icon:'📥',label:'Import Zip/HTML',fn:importProject},
 {icon:'📦',label:'Download ZIP',fn:downloadZip},
 {icon:'➕',label:'New Project',key:'Ctrl+Shift+N',fn:()=>$('newProjectBtn').click()},
 {icon:'⚙️',label:'Settings',fn:openSettings},
@@ -775,6 +927,7 @@ if((e.ctrlKey||e.metaKey)&&e.shiftKey&&(e.key==='H'||e.key==='h')){e.preventDefa
 if((e.ctrlKey||e.metaKey)&&e.shiftKey&&(e.key==='A'||e.key==='a')){e.preventDefault();toggleAutoFolder();}
 if((e.ctrlKey||e.metaKey)&&e.key==='`'){e.preventDefault();toggleConsole();}
 if(e.key==='F1'){e.preventDefault();$('shortcutsBtn').click();}
+if((e.ctrlKey||e.metaKey)&&e.key==='h'){e.preventDefault();openModal('findReplaceModal');}
 });
 document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
 document.querySelectorAll('.modal-close').forEach(b=>b.addEventListener('click',()=>b.closest('.modal').classList.remove('open')));
